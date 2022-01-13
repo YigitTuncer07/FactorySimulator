@@ -66,8 +66,8 @@ public class Factory {
     }
     public double getPaidSalaries(){
     	double totalSalaries = 0;
-    	for (int i = 0; i < employees.length; i++) {
-    		totalSalaries = totalSalaries + employees[i].getPayroll().calculateSalary();
+    	for (int i = 0; i < this.payrolls.length; i++) {
+    		totalSalaries = totalSalaries + this.payrolls[i].calculateSalary();
     	}
     	return totalSalaries;
     }
@@ -79,35 +79,30 @@ public class Factory {
     	} else if (employees.length == 1) {
     		employees = null;
     	} else {
-//    		Employee[] placeholder = new Employee[employees.length - 1];
-    		int employeeIndex = id - 1; 
-//    		for (int i = 0, j = 0; i < employees.length; i++) {
-//    			if (i != employeeIndex) {
-//    				placeholder[j++] = employees[i];
-//    			}
-//    		}
-//    		employees = placeholder;
-    		for (int i = employeeIndex; i < employees.length - 1; i++) {
-    			employees[i] = employees[i + 1];
+    		int employeeIndex = employeeIndexFinder(id);
+    		Payroll payroll = employees[employeeIndex].endShift();
+    		addPayroll(payroll);
+    		for (int i = employeeIndex; i < this.employees.length - 1; i++) {
+    			this.employees[i] = this.employees[i + 1];
     		}
     	}
     }
     public void addEmployee(Employee newEmployee){
     	if (employees == null) {
-    		Employee[] employees = new Employee[1];
-    		employees[0] = newEmployee;
-    		this.employees = employees;
+    		Employee[] arr = new Employee[1];
+    		arr[0] = newEmployee;
+    		this.employees = arr;
         	Item[] items = newEmployee.startShift();
         	for (int i = 0; i < items.length; i++) {
-        		storage.addItem(items[i]);
+        		this.storage.addItem(items[i]);
         	}
     	} else {
-        	employees = resizeEmployeeArray(employees);
-        	employees[employees.length - 1] = newEmployee;
+        	this.employees = resizeEmployeeArray(employees);
+        	this.employees[employees.length - 1] = newEmployee;
         	
-        	Item[] items = newEmployee.startShift();
-        	for (int i = 0; i < items.length; i++) {
-        		storage.addItem(items[i]);
+        	Item[] newItems = newEmployee.startShift();
+        	for (int i = 0; i < newItems.length; i++) {
+        		this.storage.addItem(newItems[i]);
         	}
     	}
     	
@@ -125,20 +120,30 @@ public class Factory {
 		return false;
     }
     public void addPayroll(Payroll payroll) {
-    	if (payrolls == null) {
-    		Payroll[] payrolls = new Payroll[1];
-    		payrolls[0] = payroll;
+    	if (this.payrolls == null) {
+    		Payroll[] arr = new Payroll[1];
+    		arr[0] = payroll;
+    		this.payrolls = arr;
+    	} else {
+    		this.payrolls = expandPayrollArray(payrolls);
+    		this.payrolls[payrolls.length - 1] = payroll;
     	}
     }
-    public Payroll[] resizePayrollArray(Payroll[] item) {
-    	return Arrays.copyOf(item, item.length - 1);
+    public Payroll[] expandPayrollArray(Payroll[] payrolls) {
+    	return Arrays.copyOf(payrolls, payrolls.length + 1);
     }
-    public int employeeIndexFinder(Employee[] employees, int id) {
-    	for (int i = 0; i < employees.length; i++) {
-    		if (employees[i].getId() == id) {
-    			return i;
-    		}
+    public int employeeIndexFinder(int id) {
+    	if (employees == null) {
+    		System.out.println("no employee to find");
+    		return -1;
+    	} else {
+    		for (int i = 0; i < employees.length; i++) {
+        		if (employees[i].getId() == id) {
+        			return i;
+        		}
+        	}
     	}
+    	System.out.println("no such employee");
     	return -1;
     }
     
