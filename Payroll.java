@@ -24,11 +24,10 @@ public class Payroll {
         return workHour;
     }
     public String toString(){
-        String s1 = "The work hour is " + workHour + " and the produced item count is " + itemCount + ".";
-        return s1;
+        return "The work hour is " + workHour + " and the produced item count is " + itemCount + ".";
     }
     public int calculateSalary(){
-        int salary = itemCount * 2 + workHour * 3;
-        return salary;
+        return itemCount * 2 + workHour * 3;
     }
 }
+
