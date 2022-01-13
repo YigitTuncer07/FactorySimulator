@@ -5,6 +5,7 @@ public class Item {
 
     public Item(int id){
         this.id = id;
+        numberOfItems++;
     }
 
     public void setId(int id) {
