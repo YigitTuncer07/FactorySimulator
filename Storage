@@ -1,0 +1,41 @@
+import java.util.Arrays;
+
+public class Storage {
+
+    private int capacity;
+    private Item[] items;
+
+    public Storage(int capacity){
+        this.capacity = capacity;
+    }
+
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
+    }
+
+    public void setItems(Item[] items) {
+        this.items = items;
+    }
+
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public Item[] getItems() {
+        return items;
+    }
+
+    public void addItem(Item newItem){
+    	if (items == null) {
+    		Item[] items = new Item[1];
+    		items[0] = newItem;
+    	} else {
+        	resizeArray(items);
+        	items[items.length - 1] = newItem;
+    	}
+    }
+    public void resizeArray(Item[] items) {
+    	items = Arrays.copyOf(items, items.length + 1);
+    }
+
+}
