@@ -26,16 +26,17 @@ public class Storage {
     }
 
     public void addItem(Item newItem){
-    	if (items == null) {
-    		Item[] items = new Item[1];
-    		items[0] = newItem;
+    	if (this.items == null) {
+    		Item[] arr = new Item[1];
+    		arr[0] = newItem;
+    		this.items = arr;
     	} else {
-        	resizeArray(items);
-        	items[items.length - 1] = newItem;
+        	resizeArray(this.items);
+        	this.items[items.length - 1] = newItem;
     	}
     }
     public void resizeArray(Item[] items) {
-    	items = Arrays.copyOf(items, items.length + 1);
+    	this.items = Arrays.copyOf(items, items.length + 1);
     }
 
 }
